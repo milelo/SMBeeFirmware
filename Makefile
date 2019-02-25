@@ -2,10 +2,11 @@
 # Released to the Public Domain
 #
 # Adapted for SMBeeHive
+# See: https://www.gnu.org/software/make/manual/html_node/index.html#SEC_Contents
 #
 # On command line:
 #
-# make all 	= Compile and upload the software
+# make all 	= Compile and upload the software. (Default)
 #
 # make compile	= Make software.
 #
@@ -240,8 +241,9 @@ extcoff: $(TARGET).elf
 	@echo $(MSG_EXTENDED_COFF) $(TARGET).cof
 	$(COFFCONVERT) -O coff-ext-avr $< $(TARGET).cof
 
-# programe the device rstdisbl fuse
-rstdisbl: $(AVRDUDE) $(AVRDUDE_FLAGS) -U fuse\:w\:0xfe\:m
+# program the device rstdisbl fuse - tested ok on new device with 12v programing protocol 
+rstdisbl:
+	$(AVRDUDE) $(AVRDUDE_FLAGS) -U fuse\:w\:0xfe\:m
 
 # Program the device.  
 #program: $(TARGET).hex $(TARGET).eep
