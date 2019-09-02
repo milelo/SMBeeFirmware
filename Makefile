@@ -108,7 +108,7 @@ AVRDUDE_PROGRAMMER = usbasp
 AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
 
 # Uncomment the following if you want avrdude's erase cycle counter.
-# Note that this counter needs to be initialized first using -Yn,
+# Note that this counter ngit eeds to be initialized first using -Yn,
 # see avrdude manual.
 #AVRDUDE_ERASE += -y
 
@@ -132,7 +132,9 @@ SHELL = sh
 
 # State here the path to the compiler 
 # (were you extracted the toolchain from the Atmel webpage)
-CC = $(SMBEE_AVR_GCC_PATH)/avr-gcc
+ifndef CC
+CC = avr-gcc
+endif
 
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
