@@ -105,7 +105,7 @@ AVRDUDE_PROGRAMMER = usbasp
 #AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex:i
 
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
-AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
+AVRDUDE_FLAGS = -p $(MCU) -c $(AVRDUDE_PROGRAMMER)
 
 # Uncomment the following if you want avrdude's erase cycle counter.
 # Note that this counter ngit eeds to be initialized first using -Yn,
