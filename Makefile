@@ -132,9 +132,11 @@ SHELL = sh
 
 # State here the path to the compiler 
 # (were you extracted the toolchain from the Atmel webpage)
-ifndef CC
-CC = avr-gcc
+ifndef SMBEE-CC
+SMBEE-CC = avr-gcc
 endif
+
+CC = $(SMBEE-CC)
 
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
