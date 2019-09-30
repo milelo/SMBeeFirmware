@@ -1,0 +1,30 @@
+{
+    "terminal.integrated.env.osx": {
+        "SMBEE-CC": "/usr/local/opt/avr-gcc@8/bin/avr-gcc"
+    },
+    "files.associations": {
+        "io.h": "c",
+        "interrupt.h": "c",
+        "pgmspace.h": "c",
+        "sleep.h": "c",
+        "delay.h": "c",
+        "sfr_defs.h": "c",
+        "stdbool.h": "c",
+        "atomic.h": "c",
+        "fuse.h": "c",
+        "program.h": "c",
+        "beelib.h": "c",
+    },
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120,
+    "cSpell.words": [
+        "PWMs",
+        "RSTDISBL",
+        "USBASP",
+        "attiny",
+        "avrdude",
+        "debounced",
+        "microcontrollers",
+        "toolchain"
+    ],
+}

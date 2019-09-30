@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Mac+homebrew",
+            "includePath": [
+                "/usr/local/opt/avr-gcc@8/lib/avr-gcc/8/gcc/avr/8.3.0/include",
+                "/usr/local/opt/avr-gcc@8/avr/include",
+                "${workspaceRoot}/include",
+                "${workspaceRoot}/src"
+            ],
+            "defines": [
+                "__AVR_ATtiny10__"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

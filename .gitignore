@@ -1,0 +1,13 @@
+.history
+dead-code
+src/*.elf
+src/*.hex
+src/*.lst
+src/*.map
+src/*.lss
+src/*.eep
+src/*.sym
+src/*.o
+src/*.s
+src/*.d
+
