@@ -43,7 +43,7 @@ This should report version 6.3 or later.
 
 First get a copy of [demo.hex], either: 
 * Download directly from the GitHub web page [demo.hex.zip] and unzip it. 
-* Clone the repository locally see the section **Downloading demo.hex from GitHub** below.
+* Clone the repository locally. See **Downloading demo.hex from GitHub** below.
 
 ### Programme [demo.hex] using AVRDUDE
 
@@ -94,10 +94,11 @@ Get a local copy of the repository:
 git clone https://github.com/milelo/SMBeeFirmware.git
 ~~~
 
-The file can then be referenced with `SMBeeFirmware/bin/demo.hex`:
+The file location is `SMBeeFirmware/bin/demo.hex`. 
 
 ~~~bash
-avrdude -v -p attiny10 -c usbasp -U fuse:w:0xfe:m -U flash:w:SMBeeFirmware/bin/demo.hex:i
+cd SMBeeFirmware
+avrdude -v -p attiny10 -c usbasp -U fuse:w:0xfe:m -U flash:w:bin/demo.hex:i
 ~~~
 
 If the machine you are downloading to has a web browser it is possible to download the file directly from GitHub however it isn't straightforward. Select the Raw display option for the file than use your browsers save-as function to specify the download location and file-name.
@@ -163,7 +164,7 @@ Other `make` arguments:
 
 ## VSCode IDE install and setup:
 
-I've used the MS VSCode IDE to develop and build the firmware. You can just use a text editor to modify the files but the IDE provides many useful features:
+I used the MS VSCode IDE to develop and build the firmware. You can just use a text editor to modify the files but the IDE provides many useful features:
 
 Download and install VSCode from [VSCode installers].
 
@@ -291,7 +292,7 @@ These are the main information sources to support the firmware:
 * To minimize the MCU power, the MCU clock frequency is chosen to be as low as possible but high enough to support the required PWM frequency. This ensures maximum LED brightness.
 * To give a pulsating effect rather simple on-off flashing, a waveform, `WAVEFORM[]` is used to modulate the the pulse-widths of the PWM's and therefor modulate the LED brightness.
 * TC0 is utilized as an 8 bit continuously running timer counter (except in sleep). From its minimum count 0 to maximum count 0xFF is the PWM period after which the counter overflows to 0. The *on* time is from minimum count 0 to when the count matches the value in the register OCR0AL or OCR0BL for PWMA and PWMB respectively. The LED brightness is therefor controlled by setting the values of registers OCR0AL and OCR0BL.
-* The TC0 overflow interrupt TOV0 is enabled to generate an interrupt on every TC0 period, 4.096ms. The integer `ct0_ticks` is defined to serve as the application timer, in the interrupt Service Routine `ISR(TIM0_OVF_vect)`, this is incremented every time the ISR is called. `ct0_ticks` is a 16bit unsigned integer so it will overflow approximately every 4.5 minutes defining the longest timer period. `ct0_ticks` is always counting except in sleep mode.
+* The TC0 overflow interrupt TOV0 is enabled to generate an interrupt on every TC0 period, 4.096ms. The integer `ct0_ticks` is defined to serve as the application timer, in the Interrupt Service Routine `ISR(TIM0_OVF_vect)`, this is incremented every time the ISR is called. `ct0_ticks` is a 16bit unsigned integer so it will overflow approximately every 4.5 minutes defining the longest timer period. `ct0_ticks` is always counting except in sleep mode.
 * `void wait(uint8_t time)` is the API call to pad the sequence step period and therefore define the LED illumination time. It takes the current value of `ct0_ticks` counter-timer, adds the wait time to it and sets the value to the integer `waitTimerEnd`, it then polls for the `WAIT_TIMEOUT` bit of `status` to be set. `waitTimerEnd` is checked for equality with `ct0_ticks` on every interrupt incrementing `ct0_ticks`. When the integers match the `WAIT_TIMEOUT` bit of `status` is set. This timing method is designed to be unaffected by `ct0_ticks` overflows.
 * `ct0_ticks` is also used to index the array `WAVEFORM[]` of LED brightness values, at the selected flash rate. `ct0_ticks` increments at a fixed rate however by selecting which 4 bits from `ct0_ticks` are used to index the waveform, the rate of change of the index values can be selected. The lower bits will be fast, moving up a bit, the rate will halve. Bits in the variable `ledModulator` are used to define the flash rate for both PWMs.
 * An anti-phase flag `FLASH_ANTIPHASE` is available in the API to specify that one LED should flash in anti-phase to another. This is achieved by adding an offset to one of `WAVEFORM[]` index values therefore shifting its phase by 180°.
@@ -313,6 +314,8 @@ sting	     | 1 | 1 | 0 | 6
 eyes & sting | 1 | 0 | 0 | 4
 
 **Table 1**, **PB**: Port B
+
+<iframe width="400" height="225" src="https://www.youtube.com/embed/2UukflvSl64" frameborder="0" allowfullscreen></iframe>
 
 [ATtiny10 data sheet]: https://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8127-avr-8-bit-microcontroller-attiny4-attiny5-attiny9-attiny10_datasheet.pdf
 [AVRDUDE]: https://www.nongnu.org/avrdude/
