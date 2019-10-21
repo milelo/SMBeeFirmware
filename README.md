@@ -142,9 +142,12 @@ avr-gcc --version
 
 ### Windows
 
-**Compiling under Windows hasn't been tested**
+This isn't currently supported.
 
-See: [The AVR GCC Toolchain]
+Unfortunately the windows [The AVR GCC Toolchain] doesn't currently support the ATtiny10 MCU. There are some potential alternative options I'm exploring:
+
+* [WSL] Windows Subsystem for Linux. This allow the installation of Linux distributions under windows 10 so windows 10 users can use the Linux toolchain.
+* ARDUINO IDE support. The arduino IDE supports the ATTiny10. I could make the firmware compatible with this.
 
 ## Building the firmware from the command line
 
@@ -339,3 +342,4 @@ eyes & sting | 1 | 0 | 0 | 4
 [download git]: https://git-scm.com/downloads
 [The AVR GCC Toolchain]: http://avr-eclipse.sourceforge.net/wiki/index.php/The_AVR_GCC_Toolchain
 [install the AVR toolchain on windows]: http://fab.cba.mit.edu/classes/863.16/doc/projects/ftsmin/windows_avr.html
+[WSL]: https://docs.microsoft.com/en-us/windows/wsl/about
