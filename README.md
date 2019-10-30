@@ -25,14 +25,19 @@ Windows | Manual install only | See *Windows install* below.
 
 ### Windows install
 
-I couldn't find an installer for AVRDUDE on Windows. You can download the binary and configuration file but it needs to be manually installed. A device driver is also required for this platform:
+There isn't a stand-alone installer for windows with a suitable version of AVRDUDE.
 
-* Install AVRDUDE-6.3 from the [AVRDUDE download page] see the [AVRDUDE release notes].
-* Install USBASP driver - livusbK using the [zigdig usb driver install tool] - plug in usbasp for zadig to list the USB devices then select libusbK as the driver for USBASP.
+Currently the best option is to install [WinAVR]. and manually update its version of avrdude:
+
+1. Download and install [WinAVR]. Install in the default location.
+1. Download and unpack AVRDUDE 6.3 from the [AVRDUDE download page].
+1. Copy the unpacked files (`avrdude.exe` & `avrdude.conf`) into `C:\WinAVR-20100110\bin`, overwriting the existing versions.
+
+Note: `avrdude.exe` depends on external libraries from the WinAVR installation so it can't be installed in isolation.
 
 ### Verify the avrdude installation
 
-Verify the installed version:
+To verify the installed version enter:
 ~~~bash
 avrdude
 ~~~
@@ -349,3 +354,4 @@ eyes & sting | 1 | 0 | 0 | 4
 [install the AVR toolchain on windows]: http://fab.cba.mit.edu/classes/863.16/doc/projects/ftsmin/windows_avr.html
 [WSL]: https://docs.microsoft.com/en-us/windows/wsl/about
 [homebrew-avr]: https://github.com/osx-cross/homebrew-avr
+[WinAVR]: https://sourceforge.net/projects/winavr/
