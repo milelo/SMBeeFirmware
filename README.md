@@ -109,8 +109,13 @@ To modify flash sequence of the SMBee or other aspects of the firmware you will 
 
 ## OSX toolchain install
 
-I recommend you use the [Homebrew package manager] to install the avr-gcc toolchain you will need to build the firmware. The current version 9 of the toolchain doesn't optimize the code-size for the ATtiny10 as well as version 8 so install that:
+Use the [Homebrew package manager] to install the avr-gcc toolchain you will need to build the firmware. Install version 8. I had problems compiling for the ATtiny10 on the current version 9.
+
+From [homebrew-avr]:
+
 ~~~bash
+xcode-select --install
+brew tap osx-cross/avr
 brew install avr-gcc@8
 ~~~
 
@@ -343,3 +348,4 @@ eyes & sting | 1 | 0 | 0 | 4
 [The AVR GCC Toolchain]: http://avr-eclipse.sourceforge.net/wiki/index.php/The_AVR_GCC_Toolchain
 [install the AVR toolchain on windows]: http://fab.cba.mit.edu/classes/863.16/doc/projects/ftsmin/windows_avr.html
 [WSL]: https://docs.microsoft.com/en-us/windows/wsl/about
+[homebrew-avr]: https://github.com/osx-cross/homebrew-avr
