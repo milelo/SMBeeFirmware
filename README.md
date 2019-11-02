@@ -15,13 +15,33 @@ This section covers:
 
 Install the current **version 6.3** or later, this is available for OSX, Linux and Windows:
 
-Platform | Download & Install | Command
--|-|-
-OSX | [Homebrew package manager] | `brew install avrdude`
-Linux | apt-get Advanced Package Tool, usually pre-installed on popular linux distributions. | <span style=" white-space: nowrap;">`sudo apt-get update`</br>`sudo apt-get install avrdude`</span> 
-Windows | Manual install only | See *Windows install* below.
+### OSX install
 
-<!---</br>`sudo apt-get upgrade all`--->
+Install using [Homebrew package manager]:
+~~~bash
+brew upgrade
+brew install avrdude
+~~~
+
+### Linux install
+
+Install using `apt` Advanced Package Tool, usually pre-installed on popular linux distributions:
+
+~~~bash
+sudo apt update
+sudo apt upgrade
+sudo apt install avrdude
+~~~
+
+To avoid having to superceed `avrdude` commands with `sudo`. You must set up some rules on the USB port regarding the USBASP device.
+
+From your 'SMBeeFirmware' directory:
+~~~bash
+cd bin/linux-nonroot
+. install_rule
+~~~
+
+<!---</br>`sudo apt upgrade all`--->
 
 ### Windows install
 
@@ -52,13 +72,7 @@ First get a copy of [demo.hex], either:
 
 ### Programme [demo.hex] using AVRDUDE
 
-
 Connect the SMBee with the SMBeeHive programmer to the AVRDUDE host machine.
-
-Note: if you are using **Linux** you may have to invoke `avrdude` as a system user by preceding it with `sudo` so it can locate the usbasp device eg:
-~~~bash
-sudo avrdude ....
-~~~
 
 The first time the SMBee MCU is programmed you will need to program its `RSTIDSBL` fuse, to disable the ATtiny10 reset pin functionality. Fuses are configuration bits separate from the flash memory, retained through a flash memory clear. Once the Fuse is programmed, this step can be omitted when reprogramming the main flash memory to modify the firmware.
 
@@ -68,6 +82,7 @@ avrdude -v -p attiny10 -c usbasp -U fuse:w:0xfe:m
 In response to the command programming information and progress information will be outputted to the terminal which should finnish with `avrdude: 1 bytes of fuse verified`.
 
 Now programme the main flash memory assuming [demo.hex] is in the current directory:
+
 ~~~bash
 avrdude -v -p attiny10 -c usbasp -U flash:w:demo.hex:i
 ~~~
@@ -88,7 +103,7 @@ If you don't have it, install the Git software configuration manager:
 
 Target | install
 -|-
-Linux | sudo apt-get install git
+Linux | sudo apt install git
 OSX | brew install git
 All | [download git]
 
@@ -126,38 +141,76 @@ brew install avr-gcc@8
 
 ## Linux avr-gcc toolchain install
 
-Install the version of the compiler that has been tested with the SMBeeFirmware along with the current avr libc library:
+This is the current status building the firmware under linux with gcc-avr=1:5.4.0+Atmel3.6.1-2:
+    * **Debian 10 (buster)** - builds **OK**.
+    * **Raspbian GNU/Linux 10 (buster)** - build **OK**.
+    * **Ubuntu 18.04 LTS** - build Ok but generates the wrong code. **Do not use**, program size is reported as 1138 bytes (111.1% Full).
+
+
+### Setup the toolchain:
 
 ~~~bash
-sudo apt-get install gcc-avr=1:5.4.0+Atmel3.6.1-2 avr-libc
+sudo apt update
+sudo apt upgrade
+sudo apt install make git wget
+sudo apt install gcc-avr avr-libc
 ~~~
 
-If this isn't available for your linux distribution try:
-
-Find version of packages available to install:
-~~~bash
-apt-cache policy gcc-avr
-~~~
-
-To install the current package and library. Beware I've found version 9 of avr-gcc don't optimize the code size as well for 8bit microcontrollers:
-~~~bash
-sudo apt-get install gcc-avr avr-libc
-~~~
-
-Find the installed compiler version:
+Check the installed version:
 
 ~~~bash
 avr-gcc --version
 ~~~
 
-### Windows
+Currently reporting: 
 
-This isn't currently supported.
+`avr-gcc (GCC) 5.4.0`.
 
-Unfortunately the windows [The AVR GCC Toolchain] doesn't currently support the ATtiny10 MCU. There are some potential alternative options I'm exploring:
+### Setup the USB port rules
 
-* [WSL] Windows Subsystem for Linux. This allow the installation of Linux distributions under windows 10 so windows 10 users can use the Linux toolchain.
-* ARDUINO IDE support. The arduino IDE supports the ATTiny10. I could make the firmware compatible with this.
+
+
+## Windows
+
+I haven't found an avr-gcc toolchain installation for windows that supports the ATtiny10 MCU however the Windows 10 feature [WSL], Windows Subsystem for Linux allows Linux distributions to be run under Windows which support development for the device. There are some limitations with the current version of WSL and USB support is one of them. The firmware can be built under WSL but the resulting binary must be uploaded to the bee from Windows as described above for the demo firmware, this is fairly straight forward once everything is set up because the Windows file system is shared with WSL. WSL-2, a new version of WSL is being developed by Microsoft to overcome the WSL-1 deficiencies, this will probably be formally release around April 2020.
+
+### Windows 10 WSL toolchain setup
+
+To setup a WSL development system under Windows 10 using VSCode:
+
+1. Run windows update to ensure you have an up to date version of Windows 10.
+1. Install VSCode for windows: [VSCode installers]. Don't leave VSCode open.
+1. Clone the firmware repository in a suitable location in your windows file system. 
+<br/> `git clone https://github.com/milelo/SMBeeFirmware.git`
+<br/> `cd SMBeeFirmware`
+1. Install WSL as described [here][install WSL]. I've tested the build under the following distribtions:
+    * **Debian 10 (buster)** - builds **OK**.
+    * **Ubuntu 18.04 LTS** - build Ok but generates the wrong code. **Do not use**, program size is reported as 1138 bytes (111.1% Full).
+1. Start WSL:
+<BR/>`wsl`
+<BR/>The command prompt will change to that of the linux distribution.
+1. Setup the linux distribution:
+<BR/>`sudo apt update`
+<BR/>`sudo apt upgrade`
+<BR/>`sudo apt install make git wget`
+<BR/>`sudo apt install gcc-avr avr-libc`
+1. Start VSCode from the same window, you should still be in the Linux 'SMBeeFirmware' directory:
+<BR/>`code .`
+<BR/>This will install a remote VSCode server and start VSCode running under Windows, the VSCode terminal and build will run in the Linux environment under wsl.
+<BR/>For more information see: [Visual Studio Code Remote - WSL].
+1. Open a VScode Terminal and build the firmware:
+<BR/>`make compile`
+<BR/>With the demo firmware the binaries should build and report:
+<BR/>'Program:    1016 bytes (99.2% Full)'
+<BR/>If the size is > 100% there is a problem with the build. I have experienced this but don't know the cause. Try:
+<BR/>`make clean`
+<BR/>to delete the binaries and retry.
+1. The firmware can't be flashed to the Bee from wsl. Switch back to the command window you used to install wsl and set up the environment:
+<BR/>`exit`
+<BR/>You should now be back at a **Windows** command prompt in the **SMBeeFrimware** directory.
+1. Assuming you insalled *avrdude* under Windows as described above. Connect the bee and dock and invoke the programmer:
+<BR/>`avrdude -p attiny10 -c usbasp -U fuse:w:0xfe:m -U flash:w:src/main.hex:i`
+<BR/>Windows and linux share the same file system so this will flash the file you built under Linux.
 
 ## Building the firmware from the command line
 
@@ -355,3 +408,7 @@ eyes & sting | 1 | 0 | 0 | 4
 [WSL]: https://docs.microsoft.com/en-us/windows/wsl/about
 [homebrew-avr]: https://github.com/osx-cross/homebrew-avr
 [WinAVR]: https://sourceforge.net/projects/winavr/
+[install WSL]: https://docs.microsoft.com/en-us/windows/wsl/install-win10
+[wsl configuration]: https://docs.microsoft.com/en-us/windows/wsl/wsl-config
+[LxRunOffline wiki]: https://github.com/DDoSolitary/LxRunOffline/wiki
+[Visual Studio Code Remote - WSL]: https://code.visualstudio.com/docs/remote/wsl
