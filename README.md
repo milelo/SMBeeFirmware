@@ -202,9 +202,7 @@ To setup a WSL development system under Windows 10 using VSCode:
 <BR/>`make compile`
 <BR/>With the demo firmware the binaries should build and report:
 <BR/>'Program:    1016 bytes (99.2% Full)'
-<BR/>If the size is > 100% there is a problem with the build. I have experienced this but don't know the cause. Try:
-<BR/>`make clean`
-<BR/>to delete the binaries and retry.
+<BR/>If the size is > 100% there is a problem with the build. Check the toolchain version and try an earlier version. There is a known problem under Ubuntu, see above.
 1. The firmware can't be flashed to the Bee from wsl. Switch back to the command window you used to install wsl and set up the environment:
 <BR/>`exit`
 <BR/>You should now be back at a **Windows** command prompt in the **SMBeeFrimware** directory.
