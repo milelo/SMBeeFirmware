@@ -142,9 +142,9 @@ brew install avr-gcc@8
 ## Linux avr-gcc toolchain install
 
 This is the current status building the firmware under linux with gcc-avr=1:5.4.0+Atmel3.6.1-2:
-    * **Debian 10 (buster)** - builds **OK**.
-    * **Raspbian GNU/Linux 10 (buster)** - build **OK**.
-    * **Ubuntu 18.04 LTS** - build Ok but generates the wrong code. **Do not use**, program size is reported as 1138 bytes (111.1% Full).
+* **Debian 10 (buster)** - builds **OK**.
+* **Raspbian GNU/Linux 10 (buster)** - build **OK**.
+* **Ubuntu 18.04 LTS** - build Ok but generates the wrong code. **Do not use**, program size is reported as 1138 bytes (111.1% Full).
 
 
 ### Setup the toolchain:
