@@ -166,10 +166,6 @@ Currently reporting:
 
 `avr-gcc (GCC) 5.4.0`.
 
-### Setup the USB port rules
-
-
-
 ## Windows
 
 I haven't found an avr-gcc toolchain installation for windows that supports the ATtiny10 MCU however the Windows 10 feature [WSL], Windows Subsystem for Linux allows Linux distributions to be run under Windows which support development for the device. There are some limitations with the current version of WSL and USB support is one of them. The firmware can be built under WSL but the resulting binary must be uploaded to the bee from Windows as described above for the demo firmware, this is fairly straight forward once everything is set up because the Windows file system is shared with WSL. WSL-2, a new version of WSL is being developed by Microsoft to overcome the WSL-1 deficiencies, this will probably be formally release around April 2020.
