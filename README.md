@@ -52,6 +52,10 @@ Currently the best option is to install [WinAVR]. and manually update its versio
 1. Download and install [WinAVR]. Install in the default location.
 1. Download and unpack AVRDUDE 6.3 from the [AVRDUDE download page].
 1. Copy the unpacked files (`avrdude.exe` & `avrdude.conf`) into `C:\WinAVR-20100110\bin`, overwriting the existing versions.
+1. Install libusbK as a USBASP driver:
+   * Download and install the [Zadig usb driver install tool].
+   * Plug the USBASP into a USB port and run `Zadig`.
+   * Select the `USBasp` from the combo box and `libusbK` as the driver.
 
 Note: `avrdude.exe` depends on external libraries from the WinAVR installation so it can't be installed in isolation.
 
@@ -380,7 +384,7 @@ eyes & sting | 1 | 0 | 0 | 4
 [ATtiny10 data sheet]: https://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8127-avr-8-bit-microcontroller-attiny4-attiny5-attiny9-attiny10_datasheet.pdf
 [AVRDUDE]: https://www.nongnu.org/avrdude/
 [Homebrew package manager]: https://brew.sh/
-[zigdig usb driver install tool]: https://zadig.akeo.ie/
+[Zadig usb driver install tool]: https://zadig.akeo.ie/
 [AVRDUDE release notes]: https://savannah.nongnu.org/forum/forum.php?forum_id=8461
 [AVRDUDE download page]: http://download.savannah.gnu.org/releases/avrdude/avrdude-6.3-mingw32.zip
 [VSCode installers]: https://code.visualstudio.com/download
