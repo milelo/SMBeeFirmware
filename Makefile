@@ -6,7 +6,7 @@
 #
 # On command line:
 #
-# make all 	= Compile and upload the software. (Default)
+# make all 	= Compile, set rstdisbl and upload the software. (Default)
 #
 # make compile	= Make software.
 #
