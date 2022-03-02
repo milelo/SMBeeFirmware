@@ -1,5 +1,5 @@
 .history
-dead-code
+*~
 src/*.elf
 src/*.hex
 src/*.lst

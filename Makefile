@@ -184,7 +184,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 # Default target.
 # compile and flash-program the device
-all: compile upload
+all: compile rstdisbl upload
 
 # compile the flash program
 compile: begin $(TARGET).hex sizeafter finished end
