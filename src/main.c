@@ -45,8 +45,8 @@ uint16_t waitTimerEnd;           // wait-timer tick-count; max 4.5min
 // must be put in PROGMEM (flash), don't use RAM!! See also pointers:
 // PGM_VOID_P  
 // Using a triangle wave to visually approximate  a rectified sine
-const PROGMEM uint8_t WAVEFORM[] = {0,   32,  64,  96,  128, 160, 192, 224,
-                                    255, 224, 192, 160, 128, 96,  64,  32};
+const PROGMEM uint8_t WAVEFORM[] = {32,  64,  96,  128, 160, 192, 224, 255,
+                                     224, 192, 160, 128, 96,  64,  32, 0};
 
 #define SW_SETTLE_MS 10 //TE SKRBAAE010 settle time
 
