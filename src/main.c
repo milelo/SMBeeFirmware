@@ -45,8 +45,11 @@ uint16_t waitTimerEnd;           // wait-timer tick-count; max 4.5min
 // must be put in PROGMEM (flash), don't use RAM!! See also pointers:
 // PGM_VOID_P  
 // Using a triangle wave to visually approximate  a rectified sine
-const PROGMEM uint8_t WAVEFORM[] = {32,  64,  96,  128, 160, 192, 224, 255,
-                                     224, 192, 160, 128, 96,  64,  32, 0};
+const PROGMEM uint8_t WAVEFORM[] = {32,  64,  96,  128, 160, 192, 224, 255, 224, 192, 160, 128, 96,  64,  32, 0};
+
+//const PROGMEM uint8_t WAVEFORM[] = {255, 238, 221, 204, 187, 170, 153, 136, 119, 102, 85, 68, 51, 34, 17, 0};
+
+//const PROGMEM uint8_t WAVEFORM[] = {0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255};
 
 #define SW_SETTLE_MS 10 //TE SKRBAAE010 settle time
 
@@ -106,13 +109,11 @@ ISR(TIM0_OVF_vect) {
   // according to flash rate.
   // Add waveform-index-offset if FLASH_ANTIPHASE flag is set
   if (ledModulator & MODULATOR_RATE_A) {
-    OCR0AL = WAVEFORM[((ct0_ticks >> ((ledModulator & MODULATOR_RATE_A) - 1)) &
-                       0xF) +
-                      ((ledModulator & FLASH_ANTIPHASE) == 0 ? 0 : 0x8)];
+    OCR0AL = WAVEFORM[((ct0_ticks >> ((ledModulator & MODULATOR_RATE_A) - 1)) +
+                      ((ledModulator & FLASH_ANTIPHASE) == 0 ? 0 : 0x8) & 0xF)];
   }
   if (ledModulator & MODULATOR_RATE_B) {
-    OCR0BL =
-        WAVEFORM[(ct0_ticks >> (((ledModulator & MODULATOR_RATE_B) >> 3) - 1)) &
+    OCR0BL = WAVEFORM[(ct0_ticks >> (((ledModulator & MODULATOR_RATE_B) >> 3) - 1)) &
                  0xF];
   }
 }
