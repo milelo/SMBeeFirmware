@@ -263,7 +263,7 @@ rstdisbl:
 upload: $(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) -U flash\:w\:$(TARGET).hex\:i
 
-upload-demo: $(DEMO-TARGET).hex
+upload-demo:
 	$(AVRDUDE) $(AVRDUDE_FLAGS) -U flash\:w\:$(DEMO-TARGET).hex\:i
 
 # Create final .hex from ELF output file.
@@ -359,5 +359,5 @@ clean_list :
 
 # Listing of phony targets.
 .PHONY : all begin finish end sizebefore sizeafter gccversion coff extcoff \
-	clean clean_list program
+	clean clean_list program upload-demo
 
