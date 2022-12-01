@@ -5,10 +5,11 @@
 # See: https://www.gnu.org/software/make/manual/html_node/index.html#SEC_Contents
 #
 # On command line:
+# make demo (Default) = set rstdisbl and upload the demo firmware.
 #
-# make all 	= Compile, set rstdisbl and upload the software. (Default)
+# make all 	= Compile and upload the firmware.
 #
-# make compile	= Make software.
+# make compile	= Compile the firmware.
 #
 # make clean 	= Clean out built project files.
 #
@@ -16,6 +17,8 @@
 #                 Only required before initial programming.
 #
 # make upload 	= upload the hex file to the device, using avrdude.
+#
+# make upload-demo = upload the precompiled demo.hex
 #
 # make filename.s = Just compile filename.c into the assembler code only
 #
@@ -32,6 +35,8 @@
 
 # Target file name (without extension).
 TARGET = src/main
+
+DEMO-TARGET = bin/demo
 
 # MCU name
 MCU = attiny10
@@ -183,11 +188,13 @@ ALL_CFLAGS = -mmcu=$(MCU) -I. $(CFLAGS)
 ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 # Default target.
-# compile and flash-program the device
-all: compile rstdisbl upload
+demo: rstdisbl upload-demo
 
 # compile the flash program
 compile: begin $(TARGET).hex sizeafter finished end
+
+# compile and flash-program the device
+all: compile upload
 
 dev: begin gccversion sizebefore $(TARGET).elf $(TARGET).hex $(TARGET).eep \
 	$(TARGET).lss $(TARGET).sym sizeafter finished end
@@ -255,6 +262,9 @@ rstdisbl:
 
 upload: $(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) -U flash\:w\:$(TARGET).hex\:i
+
+upload-demo: $(DEMO-TARGET).hex
+	$(AVRDUDE) $(AVRDUDE_FLAGS) -U flash\:w\:$(DEMO-TARGET).hex\:i
 
 # Create final .hex from ELF output file.
 %.hex: %.elf
