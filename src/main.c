@@ -41,14 +41,14 @@ volatile uint8_t status = 0; // Status bits
 volatile uint16_t ct0_ticks = 0; // 1:1ps, tick: 4.096ms (~4.5min) @62.5kHz;
 uint16_t waitTimerEnd;           // wait-timer tick-count; max 4.5min
 
-// Define flash brightness waveform
+// Define flash brightness modulation waveform
 // must be put in PROGMEM (flash), don't use RAM!! See also pointers:
-// PGM_VOID_P  
-// Using a triangle wave to visually approximate  a rectified sine
+// PGM_VOID_P
+// Using a triangle wave to visually approximate  a rectified sine:
 const PROGMEM uint8_t WAVEFORM[] = {32,  64,  96,  128, 160, 192, 224, 255, 224, 192, 160, 128, 96,  64,  32, 0};
-
+//fade out:
 //const PROGMEM uint8_t WAVEFORM[] = {255, 238, 221, 204, 187, 170, 153, 136, 119, 102, 85, 68, 51, 34, 17, 0};
-
+//fade in:
 //const PROGMEM uint8_t WAVEFORM[] = {0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255};
 
 #define SW_SETTLE_MS 10 //TE SKRBAAE010 settle time
