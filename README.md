@@ -221,10 +221,13 @@ make
 ~~~
 
 Other `make` arguments:
-* `make all`: Compile and upload the firmware (same as `make`)
-* `make clean`: remove the object (compiler generated) files.
-* `make compile`: just compile the firmware.
-* `make rstdisbl`: flash the rstdisbl fuse.
+* `make demo` (Default): Flash the rstdisbl fuse and the demo firmware.
+* `make all`: Compile and upload the firmware
+* `make clean`: Remove the object (compiler generated) files.
+* `make compile`: Compile the firmware.
+* `make rstdisbl`: Flash the rstdisbl fuse. This is required the first-time the MCU is programmed.
+* `make upload`: Flash the compiled firmware
+* `make upload-demo`: Flash the precompiled demo firmware.
 
 ## VSCode IDE install and setup:
 
