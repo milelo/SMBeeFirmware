@@ -5,9 +5,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Compile and upload",
+            "label": "Flash RSTDISBL and Demo firmware",
             "type": "shell",
-            "command": "make -C ${workspaceFolder}",
+            "command": "make -C ${workspaceFolder} demo",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -17,7 +17,19 @@
             ]
         },
         {
-            "label": "compile",
+            "label": "Compile and upload firmware",
+            "type": "shell",
+            "command": "make -C ${workspaceFolder} all",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Compile firmware",
             "type": "shell",
             "command": "make -C ${workspaceFolder} compile",
             "problemMatcher": [
@@ -25,13 +37,13 @@
             ]
         },
         {
-            "label": "RSTDISBL",
+            "label": "Flash RSTDISBL",
             "type": "shell",
             "command": "make -C ${workspaceFolder} rstdisbl",
             "problemMatcher": []
         },
         {
-            "label": "clean",
+            "label": "Clean workspace",
             "type": "shell",
             "command": "make -C ${workspaceFolder} clean",
             "problemMatcher": []
