@@ -9,6 +9,16 @@
             "defines": [
                 "__AVR_ATtiny10__"
             ]
+        },
+        {
+            "name": "OSX (brew)",
+            "compilerPath": "/usr/local/bin/avr-gcc",
+            "includePath": [
+                "${workspaceRoot}/src"
+            ],
+            "defines": [
+                "__AVR_ATtiny10__"
+            ]
         }
     ],
     "version": 4
