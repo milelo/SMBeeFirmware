@@ -27,9 +27,10 @@
 
 // Beware variables take up stack space, keep size to absolute minimum!!
 // volatile: can be changed at any time eg in an interrupt;
-uint8_t ledModulator; // LED flashing characteristics for PWM A & B
-#define MODULATOR_RATE_A 0b00000111
-#define MODULATOR_RATE_B 0b00111000
+uint8_t ledModulatorA; // LED flashing characteristics for PWM A
+uint8_t ledModulatorB; // LED flashing characteristics for PWM B
+
+#define MODULATOR_RATE 0b00000111
 
 #define FLASH_RATE 0b10000000 //flag
 
@@ -43,7 +44,7 @@ uint16_t waitTimerEnd;           // wait-timer tick-count; max 4.5min
 
 // Define flash brightness modulation waveform
 // must be put in PROGMEM (flash), don't use RAM!! See also pointers:
-// PGM_VOID_P
+// PGM_VOID_P  
 // Using a triangle wave to visually approximate  a rectified sine:
 const PROGMEM uint8_t WAVEFORM[] = {32,  64,  96,  128, 160, 192, 224, 255, 224, 192, 160, 128, 96,  64,  32, 0};
 //fade out:
@@ -108,12 +109,12 @@ ISR(TIM0_OVF_vect) {
   // Modulate brightness: index waveform with 4 bits from ct0_ticks selected
   // according to flash rate.
   // Add waveform-index-offset if FLASH_ANTIPHASE flag is set
-  if (ledModulator & MODULATOR_RATE_A) {
-    OCR0AL = WAVEFORM[((ct0_ticks >> ((ledModulator & MODULATOR_RATE_A) - 1)) +
-                      ((ledModulator & FLASH_ANTIPHASE) == 0 ? 0 : 0x8) & 0xF)];
+  if (ledModulatorA) {
+    OCR0AL = WAVEFORM[((ct0_ticks >> ((ledModulatorA & MODULATOR_RATE) - 1)) +
+                      (((ledModulatorA | ledModulatorB) & FLASH_ANTIPHASE) == 0 ? 0 : 0x8) & 0xF)];
   }
-  if (ledModulator & MODULATOR_RATE_B) {
-    OCR0BL = WAVEFORM[(ct0_ticks >> (((ledModulator & MODULATOR_RATE_B) >> 3) - 1)) &
+  if (ledModulatorB) {
+    OCR0BL = WAVEFORM[(ct0_ticks >> ((ledModulatorB & MODULATOR_RATE) - 1)) &
                  0xF];
   }
 }
@@ -126,9 +127,10 @@ ISR(TIM0_OVF_vect) {
 void setBrightnessA(uint8_t brightness) {
   if ((brightness & FLASH_RATE) == 0) {
     OCR0AL = 0xFF * brightness / 100; // Set brightness as PWM pulse width
+    ledModulatorA = 0;
   } else {
     // Set ledModulator to give ISR dynamic control of OCR0A.
-    ledModulator |= brightness; // Set flash rate and phase bit
+    ledModulatorA = brightness; // Set flash rate and phase bit
   }
 }
 
@@ -136,15 +138,14 @@ void setBrightnessA(uint8_t brightness) {
 void setBrightnessB(uint8_t brightness) {
   if ((brightness & FLASH_RATE) == 0) {
     OCR0BL = 0xFF * brightness / 100; // Set brightness as PWM pulse width
+    ledModulatorB = 0;
   } else {
     // Set ledModulator to give ISR dynamic control of OCR0B.
-    ledModulator |= (brightness << 3) |             // Set flash rate
-                    (brightness & FLASH_ANTIPHASE); // Preserve phase bit
+    ledModulatorB = brightness;
   }
 }
 
 void show2(uint8_t ledState, uint8_t brightness1, uint8_t brightness2) {
-  ledModulator = 0; // Initialise
   uint8_t COM = 0;  // Initialise Compare Output Mode (A & B)
   if ((ledState & 0b100) == 0) {
     // non-inverting PWM - pull-up
