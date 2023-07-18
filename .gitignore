@@ -1,4 +1,6 @@
 .history
+.clj-kondo
+.lsp
 *~
 src/*.elf
 src/*.hex
